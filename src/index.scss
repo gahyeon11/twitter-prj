@@ -4,6 +4,7 @@ $text: #212529;
 $sub-text: #6c757d;
 $border: #e5e5e5;
 $background: #ffffff;
+$backgroundLight: #ececec;
 $activeBg: #cca8ff13;
 $white: #ffffff;
 $primaryColor: #6200ee;
@@ -81,7 +82,7 @@ body {
 
   &_grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     background-color: transparent;
 
     button {
@@ -100,6 +101,33 @@ body {
 
 // home 레이아웃
 .home {
+  &_search-div {
+    display: flex;
+    // justify-self: start;
+  }
+
+  &_search {
+    font-family: $font;
+    padding: 8px;
+    border: none;
+    outline: none;
+    width: calc(100% - 32px);
+    margin-top: 8px;
+    background-color: $backgroundLight;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    margin-left: 16px;
+    padding: 12px;
+    width: 90% !important;
+    font-size: 15px;
+    font-weight: 600;
+
+    &:focus {
+      border: 1px solid $primaryColor;
+      background-color: $activeBg;
+    }
+  }
+
   &_top {
     @extend .transparent;
     @extend .sticky;
@@ -107,7 +135,7 @@ body {
 
   &_title {
     background-color: transparent;
-    width: 100%;
+    width: 90%;
     padding: 16px;
     font-weight: 700;
     font-size: 20px;
@@ -148,6 +176,7 @@ body {
     width: calc(100% - 32px);
     margin-top: 8px;
   }
+
   &_hashtags {
     padding: 16px;
     border-bottom: 1px solid $border;
