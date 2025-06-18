@@ -44,6 +44,16 @@ export default function PostBox({ post }: PostBoxProps) {
               <div className="post_createdAt">{post?.createdAt}</div>
             </div>
             <div className="post_box-content">{post?.content}</div>
+            <div className="post-form_hashtags-outputs">
+              {post?.hashTags?.map((tag, index) => (
+              <span
+                className="post-form_hashtags-tag"
+                key={index}
+              >
+                # {tag}
+              </span>
+            ))}
+            </div>
           </div>
         </Link>
         <div className="post_box-footer">

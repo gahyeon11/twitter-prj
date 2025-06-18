@@ -7,11 +7,13 @@ import { toast } from "react-toastify";
 
 export default function PostForm() {
   const [content, setContent] = useState<string>("");
-  const {user} = useContext(AuthContext);
+  const [hashtag, setHashtag] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const { user } = useContext(AuthContext);
 
   const handleFileUpload = () => {};
 
-  const onSubmit = async(e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -24,23 +26,44 @@ export default function PostForm() {
         }),
         uid: user?.uid,
         email: user?.email,
-
+        hashTags: tags
       });
+      setTags([]);
+      setHashtag("");
       setContent("");
       toast.success("게시글을 생성했습니다.");
     } catch (e: any) {
       console.log(e);
     }
   };
-  
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const {
-      target: {name , value},
-    }=e;
+      target: { name, value },
+    } = e;
 
-    if(name ==="content"){
+    if (name === "content") {
       setContent(value);
+    }
+  };
 
+  const onChangeHashtag = (e: any) => {
+    setHashtag(e?.target?.value?.trim());
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(tags?.filter((value) => value !== tag));
+    // 넘겨받은 태그값과 다른 값만 필터링
+  };
+
+  const handleKeyUp = (e: any) => {
+    if (e.keyCode === 32 && e.target.value.trim() !== "") {
+      if (tags?.includes(e.target.value.trim())) {
+        toast.error("동일한 태그가 있습니다.");
+      } else {
+        setTags((prev) => (prev?.length > 0 ? [...prev, hashtag] : [hashtag]));
+        setHashtag("");
+      }
     }
   };
 
@@ -56,6 +79,28 @@ export default function PostForm() {
           onChange={onChange}
           value={content}
         />
+        <div className="post-form_hashtags">
+          <span className="post-form_hashtags-outputs">
+            {tags?.map((tag, index) => (
+              <span
+                className="post-form_hashtags-tag"
+                key={index}
+                onClick={() => removeTag(tag)}
+              >
+                # {tag}
+              </span>
+            ))}
+          </span>
+          <input
+            className="post-form_input"
+            name="hashtag"
+            id="hashtag"
+            placeholder="해시태그 + 스페이스바 입력"
+            onChange={onChangeHashtag}
+            onKeyUp={handleKeyUp}
+            value={hashtag}
+          />
+        </div>
         <div className="post-form_submit-area">
           <label htmlFor="file-input" className="post-form_file">
             <FiImage className="post-form_file-icon" />
@@ -70,7 +115,6 @@ export default function PostForm() {
           <input type="submit" value="Tweet" className="post-form_submit-btn" />
         </div>
       </form>
-
     </>
   );
 }

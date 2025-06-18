@@ -140,6 +140,40 @@ body {
 }
 
 .post-form {
+  &_input {
+    font-family: $font;
+    padding: 8px;
+    border: none;
+    outline: none;
+    width: calc(100% - 32px);
+    margin-top: 8px;
+  }
+  &_hashtags {
+    padding: 16px;
+    border-bottom: 1px solid $border;
+
+    &-outputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 1px;
+      align-items: center;
+    }
+    &-tag {
+      font-size: 14px;
+      border: 1px solid $primaryColor;
+      color: $primaryColor;
+      border-radius: 10px;
+      padding: 1px 8px;
+      margin-right: 6px;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: $activeBorder;
+        border: 1px solid $activeBorder;
+      }
+    }
+  }
   &_textarea {
     font-family: $font;
     min-height: 120px;
@@ -187,12 +221,12 @@ body {
 
 // Post 레이아웃
 .post {
-  &_header{
-    button{
+  &_header {
+    button {
       border: none;
       padding: 16px;
     }
-    &-btn{
+    &-btn {
       width: 20px;
       height: 20px;
       cursor: pointer;
