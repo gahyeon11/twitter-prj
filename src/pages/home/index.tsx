@@ -1,9 +1,16 @@
 import PostBox from "components/posts/PostBox";
 import PostForm from "components/posts/PostForm";
 import AuthContext from "context/AuthContext";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "firebaseApp";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 export interface PostProps {
   id: string;
@@ -19,14 +26,46 @@ export interface PostProps {
   imageUrl?: string;
 }
 
+interface UserProps {
+  id: string;
+}
+
+type tabType = "all" | "following";
+
 export default function HomePage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const [followingPosts, setFollowingPosts] = useState<PostProps[]>([]);
+  const [followingIds, setFollowingIds] = useState<string[]>([""]);
+  const [activeTab, setActiveTab] = useState<tabType>("all");
   const { user } = useContext(AuthContext);
+
+  // 실시간 동기화로 user의 팔로잉 id 배열 가져오기
+  const getFollowingIds = useCallback(async () => {
+    if (user?.uid) {
+      const ref = doc(db, "following", user?.uid);
+      onSnapshot(ref, (doc) => {
+        setFollowingIds([""]);
+        doc
+          ?.data()
+          ?.users?.map((user: UserProps) =>
+            setFollowingIds((prev: string[]) =>
+              prev ? [...prev, user?.id] : []
+            )
+          );
+      });
+    }
+  }, [user?.uid]);
 
   useEffect(() => {
     if (user) {
       let postRef = collection(db, "posts");
       let postQuer = query(postRef, orderBy("createdAt", "desc"));
+      let followingQuery = query(
+        postRef,
+        where("uid", "in", followingIds),
+        orderBy("createdAt", "desc")
+      );
+
       onSnapshot(postQuer, (snapShot) => {
         let dataObj = snapShot.docs.map((doc) => ({
           ...doc.data(),
@@ -34,28 +73,69 @@ export default function HomePage() {
         }));
         setPosts(dataObj as PostProps[]);
       });
+
+      onSnapshot(followingQuery, (snapShot) => {
+        let dataObj = snapShot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc?.id,
+        }));
+        setFollowingPosts(dataObj as PostProps[]);
+      });
     }
-  }, [user]);
+  }, [followingIds, user]);
+
+  useEffect(() => {
+    if (user?.uid) getFollowingIds();
+  }, [getFollowingIds, user?.uid]);
 
   return (
     <div className="home">
       <div className="home_top">
         <div className="home_title">TWITTER HOME</div>
         <div className="home_tabs">
-          <div className="home_tab home_tab-active">For you</div>
-          <div className="home_tab">Following</div>
+          <div
+            className={`home_tab ${activeTab === "all" && "home_tab-active"}`}
+            onClick={() => {
+              setActiveTab("all");
+            }}
+          >
+            All
+          </div>
+          <div
+            className={`home_tab ${
+              activeTab === "following" && "home_tab-active"
+            }`}
+            onClick={() => {
+              setActiveTab("following");
+            }}
+          >
+            Following
+          </div>
         </div>
       </div>
       <PostForm />
-      <div className="post">
-        {posts?.length > 0 ? (
-          posts?.map((post) => <PostBox post={post} key={post.id} />)
-        ) : (
-          <div className="post_no-posts">
-            <div className="post_text">게시글이 없습니다.</div>
-          </div>
-        )}
-      </div>
+      {activeTab === "all" && (
+        <div className="post">
+          {posts?.length > 0 ? (
+            posts?.map((post) => <PostBox post={post} key={post.id} />)
+          ) : (
+            <div className="post_no-posts">
+              <div className="post_text">게시글이 없습니다.</div>
+            </div>
+          )}
+        </div>
+      )}
+      {activeTab === "following" && (
+        <div className="post">
+          {followingPosts?.length > 0 ? (
+            followingPosts?.map((post) => <PostBox post={post} key={post.id} />)
+          ) : (
+            <div className="post_no-posts">
+              <div className="post_text">게시글이 없습니다.</div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
