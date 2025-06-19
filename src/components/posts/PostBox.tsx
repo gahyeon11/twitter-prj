@@ -16,9 +16,9 @@ export default function PostBox({ post }: PostBoxProps) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleDelete = async() => {
-    const confirm = window.confirm("해당 게시물을 삭제하시겠습니까?")
-    if(confirm) {
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 게시물을 삭제하시겠습니까?");
+    if (confirm) {
       await deleteDoc(doc(db, "posts", post.id));
       toast.success("게시글을 삭제했습니다.");
       navigate(`/`);
@@ -43,21 +43,22 @@ export default function PostBox({ post }: PostBoxProps) {
               <div className="post_email">{post?.email}</div>
               <div className="post_createdAt">{post?.createdAt}</div>
             </div>
-            <div className="post_box-content">{post?.content}</div>
             {post?.imageUrl && (
               <div className="post_image-div">
-                <img src={post?.imageUrl} alt="post img" className="post_image" width={100} height={100}/>
+                <img
+                  src={post?.imageUrl}
+                  alt="post img"
+                  className="post_image"
+                />
               </div>
             )}
+            <div className="post_box-content">{post?.content}</div>
             <div className="post-form_hashtags-outputs">
               {post?.hashTags?.map((tag, index) => (
-              <span
-                className="post-form_hashtags-tag"
-                key={index}
-              >
-                # {tag}
-              </span>
-            ))}
+                <span className="post-form_hashtags-tag" key={index}>
+                  # {tag}
+                </span>
+              ))}
             </div>
           </div>
         </Link>
@@ -77,13 +78,13 @@ export default function PostBox({ post }: PostBoxProps) {
             </>
           )}
           <button type="button" className="post_likes">
-                <AiFillHeart />
-                {post?.likeCount || 0}
-              </button>
-              <button type="button" className="post_comments">
-                <FaRegComment />
-                {post?.comments?.length || 0}
-              </button>
+            <AiFillHeart />
+            {post?.likeCount || 0}
+          </button>
+          <button type="button" className="post_comments">
+            <FaRegComment />
+            {post?.comments?.length || 0}
+          </button>
         </div>
       </div>
     </>

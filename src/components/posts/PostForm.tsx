@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { FiImage } from "react-icons/fi";
+import { GrImage } from "react-icons/gr";
 import { db, storage } from "firebaseApp";
 
 import { toast } from "react-toastify";
@@ -15,7 +15,6 @@ export default function PostForm() {
   const [imageFile, setImageFile] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const { user } = useContext(AuthContext);
-
 
   const handleFileUpload = (e: any) => {
     const {
@@ -31,7 +30,7 @@ export default function PostForm() {
       setImageFile(result);
     };
   };
-  
+
   const onSubmit = async (e: any) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -140,9 +139,20 @@ export default function PostForm() {
       </div>
       <div className="post-form_submit-area">
         <div className="post-form_image-area">
-          <label htmlFor="file-input" className="post-form_file">
-            <FiImage className="post-form_file-icon" />
-          </label>
+          <div className="post-form_image-btn">
+            <label htmlFor="file-input" className="post-form_file">
+              <GrImage className="post-form_file-icon" />
+            </label>
+            {imageFile && (
+              <button
+                className="post-form_clear-btn"
+                type="button"
+                onClick={handleDeleteImage}
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <input
             type="file"
             name="file-input"
@@ -154,13 +164,6 @@ export default function PostForm() {
           {imageFile && (
             <div className="post-form_attachment">
               <img src={imageFile} alt="attachment" width={100} height={100} />
-              <button
-                className="post-form_clear-btn"
-                type="button"
-                onClick={handleDeleteImage}
-              >
-                Clear
-              </button>
             </div>
           )}
         </div>

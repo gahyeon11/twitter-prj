@@ -34,7 +34,7 @@ body {
 }
 
 .layout {
-  max-width: 600px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   position: relative;
   border-left: 1px solid $border;
@@ -62,7 +62,7 @@ body {
 .sticky {
   width: 100%;
   position: sticky;
-  max-width: 680px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   top: 0;
 }
@@ -75,7 +75,7 @@ body {
   bottom: 0px;
   z-index: 10;
   width: 100%;
-  max-width: 600px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   background-color: transparent;
   color: $gray;
@@ -95,6 +95,9 @@ body {
       background-color: transparent;
       padding: 20px 0px;
       backdrop-filter: blur(10px);
+    }
+    svg {
+      background-color: transparent;
     }
   }
 }
@@ -168,7 +171,7 @@ body {
 }
 
 .post-form {
-   &_profile {
+  &_profile {
     padding: 16px;
 
     .post-form_input {
@@ -190,7 +193,11 @@ body {
     align-items: center;
     gap: 8px;
   }
-
+  &_image-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   &_attachment {
     display: flex;
     align-items: end;
@@ -267,6 +274,7 @@ body {
     padding: 0.75rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
+    align-items: center;
 
     .post-form_file {
       display: flex;
@@ -274,6 +282,11 @@ body {
       flex-direction: column;
       justify-content: center;
       cursor: pointer;
+      color: $gray;
+    }
+
+    .post-form_file-icon {
+      font-size: 18px;
     }
 
     .hidden {
@@ -290,8 +303,19 @@ body {
 
 // Post 레이아웃
 .post {
-    &_image-div {
-    padding: 16px;
+  &_image-div {
+    padding-top: 16px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &_image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
   }
 
   &_header {
@@ -354,7 +378,10 @@ body {
     &-content {
       display: block;
       font-weight: 500;
-      padding: 16px 4px;
+      padding: 16px 10px;
+      word-break: break-word;
+      white-space: normal;
+      overflow: visible;
     }
 
     &-footer {
@@ -410,7 +437,7 @@ body {
 // form 레이아웃
 .form {
   margin: 0 auto;
-  max-width: 680px;
+  max-width: calc(-2px + min(470px, 100vw));
   padding: 20px;
 
   input {
@@ -419,7 +446,7 @@ body {
     border-radius: 0.3rem;
     border: 1px solid lightgray;
     width: 96%;
-    max-width: 680px;
+    max-width: calc(-2px + min(470px, 100vw));
   }
 
   &_block {
