@@ -1,6 +1,11 @@
 import AuthContext from "context/AuthContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import { db, storage } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -53,7 +58,7 @@ export default function PostEditForm() {
 
   const onSubmit = async (e: any) => {
     setIsSubmitting(true);
-        const key = `${user?.uid}/${uuidv4()}`;
+    const key = `${user?.uid}/${uuidv4()}`;
     const storageRef = ref(storage, key);
     e.preventDefault();
 
@@ -66,7 +71,7 @@ export default function PostEditForm() {
             console.log(error);
           });
         }
-        
+
         // 새로운 파일 있다면 업로드
         let imageUrl = "";
         if (imageFile) {
@@ -80,8 +85,8 @@ export default function PostEditForm() {
           hashTags: tags,
           imageUrl: imageUrl,
         });
-      navigate(`/posts/${post?.id}`);
-      toast.success("게시글을 수정했습니다.");
+        navigate(`/posts/${post?.id}`);
+        toast.success("게시글을 수정했습니다.");
       }
       setImageFile(null);
       setIsSubmitting(false);
@@ -124,9 +129,11 @@ export default function PostEditForm() {
     if (params.id) getPost();
   }, [getPost, params.id]);
   return (
-    <>    <div className="post_header">
-          <PostHeader />
-        </div>
+    <>
+      {" "}
+      <div className="post_header">
+        <PostHeader />
+      </div>
       <form className="post-form" onSubmit={onSubmit}>
         <textarea
           className="post-form_textarea"
@@ -159,6 +166,11 @@ export default function PostEditForm() {
             value={hashtag}
           />
         </div>
+        {imageFile && (
+          <div className="post-form_attachment">
+            <img src={imageFile} alt="attachment" width={100} height={100} />
+          </div>
+        )}
         <div className="post-form_submit-area">
           <div className="post-form_image-area">
             <div className="post-form_image-btn">
@@ -166,13 +178,13 @@ export default function PostEditForm() {
                 <GrImage className="post-form_file-icon" />
               </label>
               {imageFile && (
-              <button
-                type="button"
-                className="post-form_file"
-                onClick={handleDeleteImage}
-              >
-                <GrTrash className="post-form_file-icon" />
-              </button>
+                <button
+                  type="button"
+                  className="post-form_file"
+                  onClick={handleDeleteImage}
+                >
+                  <GrTrash className="post-form_file-icon" />
+                </button>
               )}
             </div>
             <input
@@ -183,16 +195,6 @@ export default function PostEditForm() {
               onChange={handleFileUpload}
               className="hidden"
             />
-            {imageFile && (
-              <div className="post-form_attachment">
-                <img
-                  src={imageFile}
-                  alt="attachment"
-                  width={100}
-                  height={100}
-                />
-              </div>
-            )}
           </div>
           <input
             type="submit"

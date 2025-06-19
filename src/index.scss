@@ -52,6 +52,10 @@ body {
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   color: $white;
+
+  &:disabled{
+    opacity: 0.5;
+  }
 }
 
 .transparent {
@@ -175,7 +179,8 @@ body {
     padding: 16px;
 
     .post-form_input {
-      border-bottom: 1px solid $gray;
+
+      border-bottom: 1px solid $border;
       padding: 8px 2px;
       font-size: 16px;
       width: 100%;
@@ -183,7 +188,7 @@ body {
 
       &:active,
       &:focus {
-        border-bottom: 1px solid white;
+        border-bottom: 1px solid $grayDark;
       }
     }
   }
@@ -203,7 +208,8 @@ body {
   &_attachment {
     display: flex;
     align-items: end;
-    gap: 16px;
+    gap:16px;
+    margin: 12px;
   }
 
   &_clear-btn {
@@ -273,7 +279,7 @@ body {
 
   &_submit-area {
     display: flex;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
     align-items: center;
@@ -530,5 +536,48 @@ body {
       background-color: $grayDark;
       color: $white;
     }
+  }
+}
+
+// profile
+.profile {
+  display: flex;
+  padding: 0 1rem;
+  margin-top: 2.5rem;
+  justify-content: space-between;
+  align-items: center;
+
+  &_image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+
+  &_btn {
+    @extend .button;
+    background-color: $primaryColor;
+
+    &:hover,
+    &:focus {
+      background-color: $activeBorder;
+    }
+  }
+
+  &_text {
+    padding: 0 1rem;
+    margin-top: 20px;
+  }
+
+  &_name {
+    font-size: 16px;
+    color: $text;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &_email {
+    font-size: 14px;
+    color: $grayDark;
+    margin-bottom: 4px;
   }
 }

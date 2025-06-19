@@ -137,6 +137,11 @@ export default function PostForm() {
           value={hashTag}
         />
       </div>
+      {imageFile && (
+            <div className="post-form_attachment">
+              <img src={imageFile} alt="attachment" width={100} height={100} />
+            </div>
+          )}
       <div className="post-form_submit-area">
         <div className="post-form_image-area">
           <div className="post-form_image-btn">
@@ -161,11 +166,7 @@ export default function PostForm() {
             onChange={handleFileUpload}
             className="hidden"
           />
-          {imageFile && (
-            <div className="post-form_attachment">
-              <img src={imageFile} alt="attachment" width={100} height={100} />
-            </div>
-          )}
+          
         </div>
         <input
           type="submit"
