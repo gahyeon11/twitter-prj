@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { GrImage } from "react-icons/gr";
+import { GrImage, GrTrash } from "react-icons/gr";
 import { db, storage } from "firebaseApp";
 
 import { toast } from "react-toastify";
@@ -145,11 +145,11 @@ export default function PostForm() {
             </label>
             {imageFile && (
               <button
-                className="post-form_clear-btn"
                 type="button"
+                className="post-form_file"
                 onClick={handleDeleteImage}
               >
-                Clear
+                <GrTrash className="post-form_file-icon" />
               </button>
             )}
           </div>

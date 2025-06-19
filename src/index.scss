@@ -193,11 +193,13 @@ body {
     align-items: center;
     gap: 8px;
   }
+
   &_image-btn {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
+  
   &_attachment {
     display: flex;
     align-items: end;
@@ -278,11 +280,11 @@ body {
 
     .post-form_file {
       display: flex;
-      padding: 0 1rem;
       flex-direction: column;
       justify-content: center;
       cursor: pointer;
       color: $gray;
+      border: none;
     }
 
     .post-form_file-icon {

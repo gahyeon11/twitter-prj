@@ -1,11 +1,14 @@
 import AuthContext from "context/AuthContext";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "firebaseApp";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { deleteObject, getDownloadURL, ref, uploadString } from "firebase/storage";
+import { db, storage } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { FiImage } from "react-icons/fi";
+import { GrImage, GrTrash } from "react-icons/gr";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import PostHeader from "./PostHeader";
 
 export default function PostEditForm() {
   const params = useParams();
@@ -15,8 +18,27 @@ export default function PostEditForm() {
   const [hashtag, setHashtag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const { user } = useContext(AuthContext);
+  const [imageFile, setImageFile] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleFileUpload = () => {};
+  const handleFileUpload = (e: any) => {
+    const {
+      target: { files },
+    } = e;
+
+    const file = files?.[0];
+    const fileReader = new FileReader();
+    fileReader?.readAsDataURL(file);
+
+    fileReader.onloadend = (e: any) => {
+      const { result } = e?.currentTarget;
+      setImageFile(result);
+    };
+  };
+
+  const handleDeleteImage = () => {
+    setImageFile(null);
+  };
 
   const getPost = useCallback(async () => {
     if (params.id) {
@@ -25,22 +47,44 @@ export default function PostEditForm() {
       setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
       setContent(docSnap?.data()?.content);
       setTags(docSnap?.data()?.hashTags);
+      setImageFile(docSnap?.data()?.imageUrl);
     }
   }, [params.id]);
 
   const onSubmit = async (e: any) => {
+    setIsSubmitting(true);
+        const key = `${user?.uid}/${uuidv4()}`;
+    const storageRef = ref(storage, key);
     e.preventDefault();
 
     try {
       if (post) {
+        // 기존 사진 지우고 새로운 사진 업로드
+        if (post?.imageUrl) {
+          let imageRef = ref(storage, post?.imageUrl);
+          await deleteObject(imageRef).catch((error) => {
+            console.log(error);
+          });
+        }
+        
+        // 새로운 파일 있다면 업로드
+        let imageUrl = "";
+        if (imageFile) {
+          const data = await uploadString(storageRef, imageFile, "data_url");
+          imageUrl = await getDownloadURL(data?.ref);
+        }
+
         const postRef = doc(db, "posts", post?.id);
         await updateDoc(postRef, {
           content: content,
           hashTags: tags,
+          imageUrl: imageUrl,
         });
-      }
       navigate(`/posts/${post?.id}`);
       toast.success("게시글을 수정했습니다.");
+      }
+      setImageFile(null);
+      setIsSubmitting(false);
     } catch (e: any) {
       console.log(e);
     }
@@ -80,7 +124,9 @@ export default function PostEditForm() {
     if (params.id) getPost();
   }, [getPost, params.id]);
   return (
-    <>
+    <>    <div className="post_header">
+          <PostHeader />
+        </div>
       <form className="post-form" onSubmit={onSubmit}>
         <textarea
           className="post-form_textarea"
@@ -114,17 +160,46 @@ export default function PostEditForm() {
           />
         </div>
         <div className="post-form_submit-area">
-          <label htmlFor="file-input" className="post-form_file">
-            <FiImage className="post-form_file-icon" />
-          </label>
+          <div className="post-form_image-area">
+            <div className="post-form_image-btn">
+              <label htmlFor="file-input" className="post-form_file">
+                <GrImage className="post-form_file-icon" />
+              </label>
+              {imageFile && (
+              <button
+                type="button"
+                className="post-form_file"
+                onClick={handleDeleteImage}
+              >
+                <GrTrash className="post-form_file-icon" />
+              </button>
+              )}
+            </div>
+            <input
+              type="file"
+              name="file-input"
+              id="file-input"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            {imageFile && (
+              <div className="post-form_attachment">
+                <img
+                  src={imageFile}
+                  alt="attachment"
+                  width={100}
+                  height={100}
+                />
+              </div>
+            )}
+          </div>
           <input
-            type="file"
-            name="file-input"
-            accept="image/*"
-            onChange={handleFileUpload}
-            className="hidden"
+            type="submit"
+            value="수정"
+            className="post-form_submit-btn"
+            disabled={isSubmitting}
           />
-          <input type="submit" value="수정" className="post-form_submit-btn" />
         </div>
       </form>
     </>
