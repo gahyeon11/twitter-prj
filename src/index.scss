@@ -5,7 +5,7 @@ $sub-text: #6c757d;
 $border: #e5e5e5;
 $background: #ffffff;
 $backgroundLight: #ececec;
-$activeBg: #cca8ff13;
+$activeBg: #e4d3fa5e;
 $white: #ffffff;
 $primaryColor: #6200ee;
 $activeBorder: #3700b3;
@@ -13,7 +13,7 @@ $secondary: #03dac6;
 $secondarySub: #018786;
 $grayText: #c5c6c8;
 $danger: #dc2626;
-$dangerDark: #dc26268e;
+$dangerDark: #bd2323;
 $gray: #9f9f9f;
 $grayDark: #4c515b;
 
@@ -34,7 +34,7 @@ body {
 }
 
 .layout {
-  max-width: 600px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   position: relative;
   border-left: 1px solid $border;
@@ -52,6 +52,10 @@ body {
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   color: $white;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 .transparent {
@@ -62,7 +66,7 @@ body {
 .sticky {
   width: 100%;
   position: sticky;
-  max-width: 680px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   top: 0;
 }
@@ -75,7 +79,7 @@ body {
   bottom: 0px;
   z-index: 10;
   width: 100%;
-  max-width: 600px;
+  max-width: calc(-2px + min(470px, 100vw));
   margin: 0 auto;
   background-color: transparent;
   color: $gray;
@@ -95,6 +99,9 @@ body {
       background-color: transparent;
       padding: 20px 0px;
       backdrop-filter: blur(10px);
+    }
+    svg {
+      background-color: transparent;
     }
   }
 }
@@ -168,6 +175,53 @@ body {
 }
 
 .post-form {
+  &_profile {
+    padding: 16px;
+
+    .post-form_input {
+      border-bottom: 1px solid $border;
+      padding: 8px 2px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 20px;
+
+      &:active,
+      &:focus {
+        border-bottom: 1px solid $grayDark;
+      }
+    }
+  }
+
+  &_image-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &_image-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  &_attachment {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    margin: 12px;
+  }
+
+  &_clear-btn {
+    @extend .button;
+    padding: 0.2rem 0.8rem;
+    background-color: $danger;
+
+    &:hover,
+    &:focus {
+      background-color: $dangerDark;
+    }
+  }
+
   &_input {
     font-family: $font;
     padding: 8px;
@@ -224,16 +278,22 @@ body {
 
   &_submit-area {
     display: flex;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
+    align-items: center;
 
     .post-form_file {
       display: flex;
-      padding: 0 1rem;
       flex-direction: column;
       justify-content: center;
       cursor: pointer;
+      color: $gray;
+      border: none;
+    }
+
+    .post-form_file-icon {
+      font-size: 18px;
     }
 
     .hidden {
@@ -250,6 +310,21 @@ body {
 
 // Post 레이아웃
 .post {
+  &_image-div {
+    padding-top: 16px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &_image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
   &_header {
     button {
       border: none;
@@ -278,9 +353,41 @@ body {
     display: flex;
     gap: 4px;
     align-items: center;
+
+    &-between {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
   }
 
-  &_email,
+  &_follow-btn {
+    @extend .button;
+    background-color: $activeBg;
+    color: $activeBorder;
+
+    &:hover,
+    &:focus {
+      background-color: $activeBorder;
+      color: $white;
+    }
+  }
+
+  &_following-btn {
+    @extend .button;
+    background-color: $activeBorder;
+    color: $white;
+
+    &:hover,
+    &:focus {
+      background-color: $activeBg;
+      color: $activeBorder;
+    }
+  }
+
+  &_email {
+    font-size: 12px;
+  }
   &_createdAt {
     font-size: 12px;
     color: $grayText;
@@ -310,7 +417,10 @@ body {
     &-content {
       display: block;
       font-weight: 500;
-      padding: 16px 4px;
+      padding: 16px 10px;
+      word-break: break-word;
+      white-space: normal;
+      overflow: visible;
     }
 
     &-footer {
@@ -366,7 +476,7 @@ body {
 // form 레이아웃
 .form {
   margin: 0 auto;
-  max-width: 680px;
+  max-width: calc(-2px + min(470px, 100vw));
   padding: 20px;
 
   input {
@@ -375,7 +485,7 @@ body {
     border-radius: 0.3rem;
     border: 1px solid lightgray;
     width: 96%;
-    max-width: 680px;
+    max-width: calc(-2px + min(470px, 100vw));
   }
 
   &_block {
@@ -457,5 +567,48 @@ body {
       background-color: $grayDark;
       color: $white;
     }
+  }
+}
+
+// profile
+.profile {
+  display: flex;
+  padding: 0 1rem;
+  margin-top: 2.5rem;
+  justify-content: space-between;
+  align-items: center;
+
+  &_image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+
+  &_btn {
+    @extend .button;
+    background-color: $primaryColor;
+
+    &:hover,
+    &:focus {
+      background-color: $activeBorder;
+    }
+  }
+
+  &_text {
+    padding: 0 1rem;
+    margin-top: 20px;
+  }
+
+  &_name {
+    font-size: 16px;
+    color: $text;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &_email {
+    font-size: 14px;
+    color: $grayDark;
+    margin-bottom: 4px;
   }
 }
