@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { RecoilRoot } from "recoil";
 
 function App() {
   const auth = getAuth(app);
@@ -26,13 +27,13 @@ function App() {
     });
   }, [auth]);
   return (
-    <Layout>
-      <ToastContainer />
-      {init ? <Router isAuthenticated={isAuthenticated} /> : <Loader />}
-    </Layout>
+    <RecoilRoot>
+      <Layout>
+        <ToastContainer />
+        {init ? <Router isAuthenticated={isAuthenticated} /> : <Loader />}
+      </Layout>
+    </RecoilRoot>
   );
 }
 
 export default App;
-
-// 사용자가 인증이 되었는지 안되었는지 새로고침을 하지 않아도 실시간으로 반영이 되게끔 하기 위해서는 onAuthStateChange 파이어베이스 함수를 사용해야 한다.
