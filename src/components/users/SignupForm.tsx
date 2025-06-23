@@ -17,7 +17,7 @@ export default function SignupForm() {
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const navigate = useNavigate();
 
-const onClickSocialLogin = async (e: any) => {
+  const onClickSocialLogin = async (e: any) => {
     const {
       target: { name },
     } = e;

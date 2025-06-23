@@ -86,7 +86,7 @@ body {
 
   &_grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     background-color: transparent;
 
     button {
@@ -95,7 +95,7 @@ body {
       gap: 8px;
       justify-content: center;
       align-items: center;
-      font-size: 15px;
+      font-size: 12px;
       background-color: transparent;
       padding: 20px 0px;
       backdrop-filter: blur(10px);

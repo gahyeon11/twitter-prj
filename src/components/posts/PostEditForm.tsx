@@ -73,10 +73,18 @@ export default function PostEditForm() {
         }
 
         // 새로운 파일 있다면 업로드
-        let imageUrl = "";
-        if (imageFile) {
+        // let imageUrl = "";
+        // if (imageFile) {
+        //   const data = await uploadString(storageRef, imageFile, "data_url");
+        //   imageUrl = await getDownloadURL(data?.ref);
+        // }
+
+        let imageUrl = post?.imageUrl ?? ""; // 기본값으로 기존 URL 유지
+
+        if (imageFile?.startsWith("data:")) {
+          // 새로 업로드된 이미지인 경우만
           const data = await uploadString(storageRef, imageFile, "data_url");
-          imageUrl = await getDownloadURL(data?.ref);
+          imageUrl = await getDownloadURL(data.ref);
         }
 
         const postRef = doc(db, "posts", post?.id);

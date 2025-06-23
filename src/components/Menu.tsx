@@ -9,6 +9,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { app } from "firebaseApp";
 
 import { toast } from "react-toastify";
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 export default function MenuList() {
   const { user } = useContext(AuthContext);
@@ -23,7 +24,12 @@ export default function MenuList() {
         <button type="button" onClick={() => navigate("/profile")}>
           <BiUserCircle />
           Profile
-        </button><button type="button" onClick={() => navigate("/search")}>
+        </button>
+        <button type="button" onClick={() => navigate("/notification")}>
+          <IoMdNotificationsOutline />
+          Notification
+        </button>
+        <button type="button" onClick={() => navigate("/search")}>
           <AiOutlineSearch />
           Search
         </button>
