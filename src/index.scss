@@ -1,24 +1,4 @@
-// _theme.scss
-// $card-background: #F8F9FA;
-$text: #212529;
-$sub-text: #6c757d;
-$border: #e5e5e5;
-$background: #ffffff;
-$backgroundLight: #ececec;
-$activeBg: #e4d3fa5e;
-$white: #ffffff;
-$primaryColor: #6200ee;
-$activeBorder: #3700b3;
-$secondary: #03dac6;
-$secondarySub: #018786;
-$grayText: #c5c6c8;
-$danger: #dc2626;
-$dangerDark: #bd2323;
-$gray: #9f9f9f;
-$grayDark: #585858;
-
-$font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+@import "./utils";
 
 // 전체 레이아웃
 body {
@@ -100,11 +80,56 @@ body {
       padding: 20px 0px;
       backdrop-filter: blur(10px);
     }
-    svg {
+    * {
       background-color: transparent;
     }
   }
 }
+
+@include xsMobile{
+  .footer{
+    display: none;
+  }
+  .layout{
+    display: none;
+  }
+}
+
+
+@include mobile {
+  .footer {
+    &_grid {
+      &-text {
+        display: none;
+      }
+      button {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .layout {
+    border: none;
+  }
+}
+
+@include tablet {
+  .footer {
+    &_grid {
+      &-text {
+        display: none;
+      }
+      button {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .layout {
+    border: none;
+  }
+}
+
 
 // home 레이아웃
 .home {

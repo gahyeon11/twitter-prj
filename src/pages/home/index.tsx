@@ -12,6 +12,7 @@ import {
 import { db } from "firebaseApp";
 import useTranslation from "hooks/useTranslation";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { BsHouse } from "react-icons/bs";
 
 export interface PostProps {
   id: string;
@@ -93,7 +94,7 @@ export default function HomePage() {
   return (
     <div className="home">
       <div className="home_top">
-        <div className="home_title">{t("MENU_HOME")}</div>
+        <div className="home_title">Twii</div>
         <div className="home_tabs">
           <div
             className={`home_tab ${activeTab === "all" && "home_tab-active"}`}

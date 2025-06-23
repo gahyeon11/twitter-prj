@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
-const PROFILE_DEFAULT_URL = "/logo512.png";
+const PROFILE_DEFAULT_URL = "/profile1.png";
 type TabType = "my" | "like";
 
 export default function ProfilePage() {
@@ -67,7 +67,6 @@ export default function ProfilePage() {
   return (
     <div className="home">
       <div className="home_top">
-        <div className="home_title">{t("MENU_PROFILE")}</div>
         <div className="profile">
           <img
             src={user?.photoURL || PROFILE_DEFAULT_URL}
