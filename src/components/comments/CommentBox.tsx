@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { toast } from "react-toastify";
 import styles from "./Comment.module.scss";
 import useTranslation from "hooks/useTranslation";
+import { FaUserCircle } from "react-icons/fa";
 
 export interface CommentProps {
   comment: string;
@@ -21,7 +22,7 @@ interface CommentBoxProps {
 
 export default function CommentBox({ data, post }: CommentBoxProps) {
   const { user } = useContext(AuthContext);
-const t = useTranslation();
+  const t = useTranslation();
   const handleDeleteComment = async () => {
     if (post) {
       try {
@@ -41,7 +42,15 @@ const t = useTranslation();
       <div className={styles.comment_borderBox}>
         <div className={styles.comment_imgBox}>
           <div className={styles.comment_flexBox}>
-            <img src={`/logo192.png`} alt="profile" />
+            {post?.profileUrl ? (
+              <img
+                src={post?.profileUrl}
+                alt="profile"
+                className="post_box-profile-img"
+              />
+            ) : (
+              <FaUserCircle className="post_box-profile-icon" />
+            )}
             <div className={styles.comment_email}>{data?.email}</div>
             <div className={styles.comment_createdAt}>{data?.createdAt}</div>
           </div>
