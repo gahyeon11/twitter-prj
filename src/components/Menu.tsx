@@ -7,30 +7,38 @@ import { useContext } from "react";
 import AuthContext from "context/AuthContext";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "firebaseApp";
-
 import { toast } from "react-toastify";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import useTranslation from "hooks/useTranslation";
 
 export default function MenuList() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const t = useTranslation();
+
   return (
     <div className="footer">
       <div className="footer_grid">
         <button type="button" onClick={() => navigate("/")}>
           <BsHouse />
-          Home
+          <span className="footer_grid-text">{t("MENU_HOME")}</span>
         </button>
         <button type="button" onClick={() => navigate("/profile")}>
           <BiUserCircle />
-          Profile
-        </button><button type="button" onClick={() => navigate("/search")}>
+          <span className="footer_grid-text">{t("MENU_PROFILE")}</span>
+        </button>
+        <button type="button" onClick={() => navigate("/notification")}>
+          <IoMdNotificationsOutline />
+          <span className="footer_grid-text">{t("MENU_NOTI")}</span>
+        </button>
+        <button type="button" onClick={() => navigate("/search")}>
           <AiOutlineSearch />
-          Search
+          <span className="footer_grid-text">{t("MENU_SEARCH")}</span>
         </button>
         {user === null ? (
           <button type="button" onClick={() => navigate("/users/login")}>
             <MdLogin />
-            Login
+            <span className="footer_grid-text">{t("MENU_LOGIN")}</span>
           </button>
         ) : (
           <button
@@ -42,7 +50,7 @@ export default function MenuList() {
             }}
           >
             <MdLogout />
-            Logout
+            <span className="footer_grid-text">{t("MENU_LOGOUT")}</span>
           </button>
         )}
       </div>

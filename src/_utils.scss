@@ -1,0 +1,48 @@
+$text: #212529;
+$sub-text: #6c757d;
+$border: #e5e5e5;
+$background: #ffffff;
+$backgroundLight: #ececec;
+$activeBg: #e4d3fa5e;
+$white: #ffffff;
+$primaryColor: #6200ee;
+$activeBorder: #3700b3;
+$secondary: #03dac6;
+$secondarySub: #018786;
+$grayText: #c5c6c8;
+$danger: #dc2626;
+$dangerDark: #bd2323;
+$gray: #9f9f9f;
+$grayDark: #585858;
+
+$font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+// Breakpoints
+$mobile: 360px;
+$tablet: 600px;
+$desktop: 1024px;
+
+// media query mixin
+@mixin xsMobile {
+  @media (max-width: #{$mobile - 1px}) {
+    @content;
+  }
+}
+@mixin mobile {
+  @media (min-width: $mobile) and (max-width: #{$tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $tablet) and (max-width: #{$desktop - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}

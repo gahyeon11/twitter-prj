@@ -1,0 +1,33 @@
+$border: #e5e5e5;
+$primaryColor: #6200ee;
+$grayText: #c5c6c8;
+
+.notification {
+  padding: 8px 16px;
+  border-bottom: 1px solid $border;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    font-weight: 600;
+  }
+
+  &_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &_createdAt {
+    color: $grayText;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  &_unread {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $primaryColor;
+  }
+}
